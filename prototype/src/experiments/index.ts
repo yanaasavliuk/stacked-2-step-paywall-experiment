@@ -2,17 +2,17 @@ import { experimentA } from './experimentA/config'
 import { experimentB } from './experimentB/config'
 
 export type ExperimentId = 'A' | 'B'
+export type PlanTier = 'gold' | 'platinum' | 'diamond'
 
 export interface ExperimentFeature {
   title: string
-  detail: string
+  availability: Record<PlanTier, boolean>
 }
 
 export interface ExperimentPlan {
-  id: string
+  id: PlanTier
   label: string
-  price: string
-  cadence: string
+  icon: string
   highlighted?: boolean
 }
 
@@ -21,6 +21,9 @@ export interface ExperimentConfig {
   badge: string
   headline: string
   subhead: string
+  legalLine: string
+  primaryPrice: string
+  primaryPriceDetail: string
   cta: string
   features: ExperimentFeature[]
   plans: ExperimentPlan[]
