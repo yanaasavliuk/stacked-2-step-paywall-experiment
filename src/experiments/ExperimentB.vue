@@ -1,0 +1,337 @@
+<template>
+  <div class="paywall">
+      <!-- Header -->
+      <header class="paywall-header">
+        <h1 class="paywall-title">
+          {{ currentState.headline }}
+        </h1>
+        <CcSegmentedControl
+          :labels="['Yearly', 'Monthly']"
+          :selected="selectedPeriod"
+          size="small"
+          @segment-clicked="selectedPeriod = $event"
+        />
+        <img
+          src="../assets/hero-image-new.svg"
+          class="hero-image"
+          alt="Chess piece illustration"
+        />
+      </header>
+
+      <!-- Plan Buttons -->
+      <section class="paywall-body">
+        <div class="plan-list">
+          <div
+            v-for="plan in plans"
+            :key="plan.key"
+            class="plan-button"
+            :class="{ 'plan-button--selected': selectedTier === plan.key }"
+            @click="selectedTier = plan.key"
+          >
+            <CcIcon :name="plan.icon" variant="color" :size="40" />
+            <div class="plan-info">
+              <span class="plan-name">{{ plan.name }}</span>
+              <span class="plan-description">{{ plan.description }}</span>
+            </div>
+            <span v-if="plan.mostPopular" class="most-popular-chip">Most Popular</span>
+          </div>
+        </div>
+      </section>
+
+  </div>
+
+  <!-- Footer (outside .paywall so no ancestor overflow interferes with backdrop-filter) -->
+  <footer class="paywall-footer cc-bg-blur">
+    <div class="price-info">
+      <span class="price">{{ currentPrice }}</span>
+      <div v-if="billingText" class="price-detail">
+        <span class="billing-text">{{ billingText }}</span>
+      </div>
+    </div>
+    <div class="cta-container">
+      <CcButton
+        variant="monetization"
+        size="x-large"
+        fullWidth
+        :label="currentState.cta"
+      />
+    </div>
+  </footer>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
+
+const pricing = {
+  defaultState: 'trialEligible' as const,
+  states: {
+    trialEligible: {
+      headline: 'Get 1 Week of Premium for Free',
+      cta: 'Try for $0.00',
+    },
+    notTrialEligible: {
+      headline: 'Get the Very Best of Chess',
+      cta: 'Go Premium',
+    },
+  },
+  plans: {
+    diamond: {
+      displayName: 'Diamond',
+      tier: 1,
+      yearly: { monthlyRate: 10.00, monthlyRateDisplay: '$10.00/mo', annualTotal: 119.99, subtext: 'billed annually, $119.99/yr' },
+      monthly: { monthlyRate: 16.99, monthlyRateDisplay: '$16.99/mo', subtext: null as string | null },
+    },
+    platinum: {
+      displayName: 'Platinum',
+      tier: 2,
+      yearly: { monthlyRate: 6.67, monthlyRateDisplay: '$6.67/mo', annualTotal: 79.99, subtext: 'billed annually, $79.99/yr' },
+      monthly: { monthlyRate: 10.99, monthlyRateDisplay: '$10.99/mo', subtext: null as string | null },
+    },
+    gold: {
+      displayName: 'Gold',
+      tier: 3,
+      yearly: { monthlyRate: 4.17, monthlyRateDisplay: '$4.17/mo', annualTotal: 49.99, subtext: 'billed annually, $49.99/yr' },
+      monthly: { monthlyRate: 6.99, monthlyRateDisplay: '$6.99/mo', subtext: null as string | null },
+    },
+    friendsAndFamily: {
+      displayName: 'Friends & Family',
+      tier: 4,
+      yearly: { monthlyRate: 16.67, monthlyRateDisplay: '$16.67/mo', annualTotal: 199.99, subtext: 'billed annually, $199.99/yr' },
+      monthly: null,
+    },
+  },
+}
+
+type PlanKey = keyof typeof pricing.plans
+type BillingPeriod = 'yearly' | 'monthly'
+
+const currentState = pricing.states[pricing.defaultState]
+const selectedPeriod = ref(0)
+const selectedTier = ref<PlanKey>('diamond')
+
+const billingPeriod = computed<BillingPeriod>(() =>
+  selectedPeriod.value === 0 ? 'yearly' : 'monthly'
+)
+
+const selectedPlanPricing = computed(() => {
+  const plan = pricing.plans[selectedTier.value]
+  return plan[billingPeriod.value]
+})
+
+const currentPrice = computed(() =>
+  selectedPlanPricing.value?.monthlyRateDisplay ?? ''
+)
+
+const billingText = computed(() =>
+  selectedPlanPricing.value?.subtext ?? null
+)
+
+const plans = [
+  {
+    key: 'diamond' as PlanKey,
+    name: pricing.plans.diamond.displayName,
+    icon: 'commerce-diamond',
+    description: 'Everything in Platinum + Move Explanations, Insights, Courses Perks',
+    mostPopular: true,
+  },
+  {
+    key: 'platinum' as PlanKey,
+    name: pricing.plans.platinum.displayName,
+    icon: 'commerce-platinum',
+    description: 'Everything in Gold + Game Review',
+    mostPopular: false,
+  },
+  {
+    key: 'gold' as PlanKey,
+    name: pricing.plans.gold.displayName,
+    icon: 'commerce-gold',
+    description: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads',
+    mostPopular: false,
+  },
+]
+</script>
+
+<style scoped>
+.paywall {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--color-gray-800);
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 146px;
+}
+
+/* Header */
+.paywall-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-24);
+  padding: 87px var(--space-12) var(--space-12);
+  width: 100%;
+  background: var(--color-gray-900) url('../assets/background-decoration-new.svg') center bottom / auto no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.paywall-title {
+  text-align: center;
+  color: var(--color-text-boldest);
+  width: 100%;
+  font-family: var(--font-family-heading);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.27;
+}
+
+.hero-image {
+  width: 160px;
+  height: 120px;
+  object-fit: contain;
+}
+
+/* Body - Plan List */
+.paywall-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-24) var(--space-12) var(--space-12);
+}
+
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 366px;
+}
+
+.plan-button {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-16);
+  padding: var(--space-16) var(--space-12) var(--space-16) var(--space-24);
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  box-shadow:
+    0px 2px 4px 0px rgba(0, 0, 0, 0.1),
+    0px 1px 2px 0px rgba(0, 0, 0, 0.14),
+    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(50px);
+  cursor: pointer;
+}
+
+.plan-button--selected {
+  outline: var(--border-3) solid var(--color-border-selected);
+  outline-offset: var(--space-2);
+}
+
+.plan-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.plan-name {
+  font-family: var(--font-family-heading, 'Chess Sans', sans-serif);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.18;
+  color: var(--color-text-boldest);
+}
+
+.plan-description {
+  font-family: 'Inter', var(--font-family-system);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.33;
+  color: var(--color-transparent-white-72);
+}
+
+.most-popular-chip {
+  position: absolute;
+  top: -13px;
+  left: var(--space-24);
+  padding: 2px 4px;
+  background: var(--color-border-selected);
+  border-radius: 3px;
+  font-family: 'Inter', var(--font-family-system);
+  font-size: 11.25px;
+  font-weight: 600;
+  line-height: 1.33;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-boldest);
+  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+/* Footer */
+.paywall-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  padding-bottom: var(--space-24);
+  position: fixed;
+  bottom: 0;
+  z-index: 10;
+}
+
+.price-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: var(--space-4);
+  padding: var(--space-12) 0 0;
+}
+
+.price {
+  font-family: var(--font-family-heading, 'Chess Sans', sans-serif);
+  font-size: var(--font-size-lg, 17px);
+  font-weight: 600;
+  line-height: 20px;
+  text-align: center;
+  color: var(--color-text-boldest);
+}
+
+.price-detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.billing-text {
+  font-family: 'Inter', var(--font-family-system);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  color: var(--color-transparent-white-50);
+}
+
+.cta-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-12) var(--space-12) var(--space-8);
+}
+
+.cta-container .cc-button-component {
+  max-width: 500px;
+}
+</style>

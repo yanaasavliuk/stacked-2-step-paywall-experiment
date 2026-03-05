@@ -6,8 +6,10 @@ import '@chesscom/design-system/dist/style.css'      // Component styles
 import { createApp } from 'vue'
 import { provideDesignSystem } from '@chesscom/design-system'
 import App from './App.vue'
+import router from './router'
 
 const app = createApp(App)
+app.use(router)
 
 // Provide design system context (required for some components)
 provideDesignSystem(app, {
