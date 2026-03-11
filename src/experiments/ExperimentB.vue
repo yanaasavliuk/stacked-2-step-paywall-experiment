@@ -6,7 +6,7 @@
           {{ currentState.headline }}
         </h1>
         <CcSegmentedControl
-          :labels="['Yearly', 'Monthly']"
+          :labels="periodLabels"
           :selected="selectedPeriod"
           size="small"
           @segment-clicked="selectedPeriod = $event"
@@ -33,7 +33,7 @@
               <span class="plan-name">{{ plan.name }}</span>
               <span class="plan-description">{{ plan.description }}</span>
             </div>
-            <span v-if="plan.mostPopular" class="most-popular-chip">Most Popular</span>
+            <span v-if="plan.mostPopular" class="most-popular-chip">{{ t.mostPopular }}</span>
           </div>
         </div>
       </section>
@@ -62,43 +62,41 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
+import { getTranslations, parseLangParam, parseEligibleParam, type LangCode } from './translations'
+
+const params = new URLSearchParams(window.location.search)
+const lang = ref<LangCode>(parseLangParam(params.get('lang')))
+const isTrialEligible = ref(parseEligibleParam(params.get('eligible')))
+
+window.addEventListener('popstate', () => {
+  const p = new URLSearchParams(window.location.search)
+  lang.value = parseLangParam(p.get('lang'))
+  isTrialEligible.value = parseEligibleParam(p.get('eligible'))
+})
+
+const t = computed(() => getTranslations(lang.value))
 
 const pricing = {
-  defaultState: 'trialEligible' as const,
-  states: {
-    trialEligible: {
-      headline: 'Get 1 Week of Premium for Free',
-      cta: 'Try for $0.00',
-    },
-    notTrialEligible: {
-      headline: 'Get the Very Best of Chess',
-      cta: 'Go Premium',
-    },
-  },
   plans: {
     diamond: {
-      displayName: 'Diamond',
       tier: 1,
-      yearly: { monthlyRate: 10.00, monthlyRateDisplay: '$10.00/mo', annualTotal: 119.99, subtext: 'billed annually, $119.99/yr' },
-      monthly: { monthlyRate: 16.99, monthlyRateDisplay: '$16.99/mo', subtext: null as string | null },
+      yearly: { monthlyRate: 10.00, annualTotal: 119.99 },
+      monthly: { monthlyRate: 16.99 },
     },
     platinum: {
-      displayName: 'Platinum',
       tier: 2,
-      yearly: { monthlyRate: 6.67, monthlyRateDisplay: '$6.67/mo', annualTotal: 79.99, subtext: 'billed annually, $79.99/yr' },
-      monthly: { monthlyRate: 10.99, monthlyRateDisplay: '$10.99/mo', subtext: null as string | null },
+      yearly: { monthlyRate: 6.67, annualTotal: 79.99 },
+      monthly: { monthlyRate: 10.99 },
     },
     gold: {
-      displayName: 'Gold',
       tier: 3,
-      yearly: { monthlyRate: 4.17, monthlyRateDisplay: '$4.17/mo', annualTotal: 49.99, subtext: 'billed annually, $49.99/yr' },
-      monthly: { monthlyRate: 6.99, monthlyRateDisplay: '$6.99/mo', subtext: null as string | null },
+      yearly: { monthlyRate: 4.17, annualTotal: 49.99 },
+      monthly: { monthlyRate: 6.99 },
     },
     friendsAndFamily: {
-      displayName: 'Friends & Family',
       tier: 4,
-      yearly: { monthlyRate: 16.67, monthlyRateDisplay: '$16.67/mo', annualTotal: 199.99, subtext: 'billed annually, $199.99/yr' },
-      monthly: null,
+      yearly: { monthlyRate: 16.67, annualTotal: 199.99 },
+      monthly: null as { monthlyRate: number } | null,
     },
   },
 }
@@ -106,7 +104,10 @@ const pricing = {
 type PlanKey = keyof typeof pricing.plans
 type BillingPeriod = 'yearly' | 'monthly'
 
-const currentState = pricing.states[pricing.defaultState]
+const currentState = computed(() =>
+  isTrialEligible.value ? t.value.trialEligible : t.value.notTrialEligible
+)
+
 const selectedPeriod = ref(0)
 const selectedTier = ref<PlanKey>('diamond')
 
@@ -119,37 +120,45 @@ const selectedPlanPricing = computed(() => {
   return plan[billingPeriod.value]
 })
 
-const currentPrice = computed(() =>
-  selectedPlanPricing.value?.monthlyRateDisplay ?? ''
-)
+const currentPrice = computed(() => {
+  const rate = selectedPlanPricing.value?.monthlyRate
+  if (rate == null) return ''
+  return t.value.perMonth(`$${rate.toFixed(2)}`)
+})
 
-const billingText = computed(() =>
-  selectedPlanPricing.value?.subtext ?? null
-)
+const billingText = computed(() => {
+  if (billingPeriod.value !== 'yearly') return null
+  const plan = pricing.plans[selectedTier.value]
+  const yearly = plan.yearly
+  if (!yearly) return null
+  return t.value.billedAnnually(`$${yearly.annualTotal.toFixed(2)}`)
+})
 
-const plans = [
+const periodLabels = computed(() => [t.value.yearly, t.value.monthly])
+
+const plans = computed(() => [
   {
     key: 'diamond' as PlanKey,
-    name: pricing.plans.diamond.displayName,
+    name: t.value.tiers.diamond,
     icon: 'commerce-diamond',
-    description: 'Everything in Platinum + Move Explanations, Insights, Courses Perks',
+    description: t.value.planDescriptions.diamond,
     mostPopular: true,
   },
   {
     key: 'platinum' as PlanKey,
-    name: pricing.plans.platinum.displayName,
+    name: t.value.tiers.platinum,
     icon: 'commerce-platinum',
-    description: 'Everything in Gold + Game Review',
+    description: t.value.planDescriptions.platinum,
     mostPopular: false,
   },
   {
     key: 'gold' as PlanKey,
-    name: pricing.plans.gold.displayName,
+    name: t.value.tiers.gold,
     icon: 'commerce-gold',
-    description: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads',
+    description: t.value.planDescriptions.gold,
     mostPopular: false,
   },
-]
+])
 </script>
 
 <style scoped>

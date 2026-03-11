@@ -58,15 +58,14 @@
     <!-- Floating control panel -->
     <Transition name="panel">
       <div v-if="panelOpen" class="control-panel">
-        <div class="control-section">
-          <div class="control-label">Experiment</div>
-          <CcSegmentedControl
-            :labels="['A', 'B']"
-            :selected="selectedExperiment === 'A' ? 0 : 1"
-            size="small"
-            fullWidth
-            @segment-clicked="selectedExperiment = $event === 0 ? 'A' : 'B'"
-          />
+        <div class="control-section control-section--row">
+          <div class="control-label">Image</div>
+          <CcSwitch v-model="showImage" />
+        </div>
+
+        <div class="control-section control-section--row">
+          <div class="control-label">Trial Eligible</div>
+          <CcSwitch v-model="trialEligible" />
         </div>
 
         <div class="control-section">
@@ -87,6 +86,14 @@
             :options="deviceSelectOptions"
           />
         </div>
+
+        <div class="control-section">
+          <div class="control-label">Language</div>
+          <CcSelect
+            v-model="selectedLang"
+            :options="languageOptions"
+          />
+        </div>
       </div>
     </Transition>
   </div>
@@ -94,7 +101,8 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CcIcon, CcSegmentedControl, CcSelect } from '@chesscom/design-system'
+import { CcIcon, CcSegmentedControl, CcSelect, CcSwitch } from '@chesscom/design-system'
+import type { LangCode } from './translations'
 
 interface DeviceSpec {
   id: string
@@ -112,10 +120,18 @@ const devices: DeviceSpec[] = [
   { id: 'tablet-lg', label: 'Tablet Large', w: 1024, h: 1366 },
 ]
 
-const selectedExperiment = ref<'A' | 'B'>('A')
+const showImage = ref(true)
 const selectedDevice = ref('phone-md')
 const selectedOrientation = ref<'portrait' | 'landscape'>('portrait')
 const panelOpen = ref(true)
+const trialEligible = ref(true)
+const selectedLang = ref<LangCode>('en')
+
+const languageOptions = [
+  { value: 'en', label: 'English' },
+  { value: 'de', label: 'German' },
+  { value: 'uk', label: 'Ukrainian' },
+]
 
 const deviceSelectOptions = devices.map(d => ({
   value: d.id,
@@ -147,9 +163,14 @@ const deviceShellStyle = computed(() => ({
   height: `${deviceHeight.value}px`,
 }))
 
-const iframeSrc = computed(() =>
-  selectedExperiment.value === 'A' ? '/a' : '/b'
-)
+const iframeSrc = computed(() => {
+  const params = new URLSearchParams({
+    eligible: String(trialEligible.value),
+    lang: selectedLang.value,
+    image: String(showImage.value),
+  })
+  return `/a?${params}`
+})
 
 function hideIframeScrollbar(event: Event) {
   try {
@@ -311,7 +332,7 @@ function hideIframeScrollbar(event: Event) {
 }
 
 .fab-toggle--open {
-  top: calc(24px + 260px + 16px);
+  top: calc(24px + 420px + 16px);
 }
 
 /* --- Floating control panel --- */
@@ -346,6 +367,12 @@ function hideIframeScrollbar(event: Event) {
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: rgba(255, 255, 255, 0.45);
+}
+
+.control-section--row {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* --- Panel transition --- */
