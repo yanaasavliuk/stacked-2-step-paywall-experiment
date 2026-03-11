@@ -43,10 +43,9 @@
       </div>
     </div>
 
-    <!-- Floating toggle button -->
+    <!-- Floating toggle button (always in same position) -->
     <button
       class="fab-toggle"
-      :class="{ 'fab-toggle--open': panelOpen }"
       @click="panelOpen = !panelOpen"
     >
       <CcIcon
@@ -55,7 +54,7 @@
       />
     </button>
 
-    <!-- Floating control panel -->
+    <!-- Floating control panel (opens below the button) -->
     <Transition name="panel">
       <div v-if="panelOpen" class="control-panel">
         <div class="control-section control-section--row">
@@ -331,14 +330,10 @@ function hideIframeScrollbar(event: Event) {
   background: rgba(60, 56, 52, 0.95);
 }
 
-.fab-toggle--open {
-  top: calc(24px + 420px + 16px);
-}
-
 /* --- Floating control panel --- */
 .control-panel {
   position: fixed;
-  top: 24px;
+  top: 88px;
   right: 24px;
   width: 260px;
   max-height: none;

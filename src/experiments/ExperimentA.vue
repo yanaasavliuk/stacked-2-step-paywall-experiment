@@ -1,5 +1,14 @@
 <template>
   <div class="paywall">
+      <!-- Nav bar back button -->
+      <nav class="paywall-nav">
+        <CcIconButton
+          :icon="{ name: 'arrow-line-left', variant: 'glyph' }"
+          variant="ghost"
+          size="medium"
+        />
+      </nav>
+
       <!-- Header -->
       <header class="paywall-header" :class="{ 'paywall-header--no-image': !showImage }">
         <h1 class="paywall-title">
@@ -99,7 +108,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
+import { CcButton, CcIcon, CcIconButton, CcSegmentedControl } from '@chesscom/design-system'
 import { getTranslations, parseLangParam, parseEligibleParam, type LangCode } from './translations'
 
 const params = new URLSearchParams(window.location.search)
@@ -224,13 +233,21 @@ const tiers = computed(() => [
   padding-bottom: 146px;
 }
 
+/* Nav bar */
+.paywall-nav {
+  position: absolute;
+  top: 54px;
+  left: var(--space-4);
+  z-index: 5;
+}
+
 /* Header */
 .paywall-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-24);
-  padding: 87px var(--space-12) var(--space-12);
+  padding: 94px var(--space-12) var(--space-12);
   width: 100%;
   background: var(--color-gray-900) url('../assets/background-decoration-new.svg') center bottom / auto no-repeat;
   position: relative;
