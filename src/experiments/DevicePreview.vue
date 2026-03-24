@@ -68,6 +68,17 @@
         </div>
 
         <div class="control-section">
+          <div class="control-label">IOS/ANDROID</div>
+          <CcSegmentedControl
+            :labels="['iOS', 'Android']"
+            :selected="selectedPlatform === 'ios' ? 0 : 1"
+            size="small"
+            fullWidth
+            @segment-clicked="selectedPlatform = $event === 0 ? 'ios' : 'android'"
+          />
+        </div>
+
+        <div class="control-section">
           <div class="control-label">Orientation</div>
           <CcSegmentedControl
             :labels="['Portrait', 'Landscape']"
@@ -101,7 +112,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CcIcon, CcSegmentedControl, CcSelect, CcSwitch } from '@chesscom/design-system'
-import type { LangCode } from './translations'
+import type { LangCode, PlatformParam } from './translations'
 
 interface DeviceSpec {
   id: string
@@ -124,6 +135,7 @@ const selectedDevice = ref('phone-md')
 const selectedOrientation = ref<'portrait' | 'landscape'>('portrait')
 const panelOpen = ref(true)
 const trialEligible = ref(true)
+const selectedPlatform = ref<PlatformParam>('ios')
 const selectedLang = ref<LangCode>('en')
 
 const languageOptions = [
@@ -167,6 +179,7 @@ const iframeSrc = computed(() => {
     eligible: String(trialEligible.value),
     lang: selectedLang.value,
     image: String(showImage.value),
+    platform: selectedPlatform.value,
   })
   return `/a?${params}`
 })

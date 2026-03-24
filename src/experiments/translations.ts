@@ -36,6 +36,10 @@ export interface TranslationStrings {
     platinum: string
     gold: string
   }
+  androidPerMonthDisplay: (rate: string) => string
+  androidAnnualSummary: (total: string) => string
+  androidGooglePlayDisclaimerYearly: (annualTotal: string, monthlyEquivPerMo: string) => string
+  androidGooglePlayDisclaimerMonthly: (monthlyRate: string) => string
 }
 
 export const translations: Record<LangCode, TranslationStrings> = {
@@ -76,6 +80,12 @@ export const translations: Record<LangCode, TranslationStrings> = {
       platinum: 'Everything in Gold + Game Review',
       gold: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads',
     },
+    androidPerMonthDisplay: (rate) => `${rate} / month`,
+    androidAnnualSummary: (total) => `12 months • ${total}`,
+    androidGooglePlayDisclaimerYearly: (annualTotal, monthlyEquivPerMo) =>
+      `You will be charged ${annualTotal} per year (${monthlyEquivPerMo}). You may cancel anytime in Google Play.`,
+    androidGooglePlayDisclaimerMonthly: (monthlyRate) =>
+      `You will be charged ${monthlyRate} per month. You may cancel anytime in Google Play.`,
   },
 
   de: {
@@ -115,6 +125,12 @@ export const translations: Record<LangCode, TranslationStrings> = {
       platinum: 'Alles in Gold + Partieanalyse',
       gold: 'Unbegrenzt: Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung',
     },
+    androidPerMonthDisplay: (rate) => `${rate} / Monat`,
+    androidAnnualSummary: (total) => `12 Monate • ${total}`,
+    androidGooglePlayDisclaimerYearly: (annualTotal, monthlyEquivPerMo) =>
+      `Dir wird ${annualTotal} pro Jahr (${monthlyEquivPerMo}) berechnet. Du kannst jederzeit in Google Play kündigen.`,
+    androidGooglePlayDisclaimerMonthly: (monthlyRate) =>
+      `Dir wird ${monthlyRate} pro Monat berechnet. Du kannst jederzeit in Google Play kündigen.`,
   },
 
   uk: {
@@ -154,6 +170,12 @@ export const translations: Record<LangCode, TranslationStrings> = {
       platinum: 'Все з Золота + Огляд партій',
       gold: 'Необмежено: Задачі, Уроки, Боти, Тренер гри, Без реклами',
     },
+    androidPerMonthDisplay: (rate) => `${rate} / місяць`,
+    androidAnnualSummary: (total) => `12 місяців • ${total}`,
+    androidGooglePlayDisclaimerYearly: (annualTotal, monthlyEquivPerMo) =>
+      `З вас стягуватиметься ${annualTotal} на рік (${monthlyEquivPerMo}). Скасувати можна будь-коли в Google Play.`,
+    androidGooglePlayDisclaimerMonthly: (monthlyRate) =>
+      `З вас стягуватиметься ${monthlyRate} на місяць. Скасувати можна будь-коли в Google Play.`,
   },
 }
 
@@ -169,4 +191,11 @@ export function parseLangParam(value: string | null): LangCode {
 export function parseEligibleParam(value: string | null): boolean {
   if (value === 'false' || value === '0') return false
   return true
+}
+
+export type PlatformParam = 'ios' | 'android'
+
+export function parsePlatformParam(value: string | null): PlatformParam {
+  if (value === 'android') return 'android'
+  return 'ios'
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="paywall">
+  <div class="paywall" :class="{ 'paywall--android': platform === 'android' }">
       <!-- Header -->
       <header class="paywall-header">
         <h1 class="paywall-title">
@@ -41,13 +41,26 @@
   </div>
 
   <!-- Footer (outside .paywall so no ancestor overflow interferes with backdrop-filter) -->
-  <footer class="paywall-footer cc-bg-blur">
-    <div class="price-info">
-      <span class="price">{{ currentPrice }}</span>
-      <div v-if="billingText" class="price-detail">
-        <span class="billing-text">{{ billingText }}</span>
+  <footer
+    class="paywall-footer cc-bg-blur"
+    :class="{ 'paywall-footer--android': platform === 'android' }"
+  >
+    <template v-if="platform === 'ios'">
+      <div class="price-info">
+        <span class="price">{{ currentPrice }}</span>
+        <div v-if="billingText" class="price-detail">
+          <span class="billing-text">{{ billingText }}</span>
+        </div>
       </div>
-    </div>
+    </template>
+    <template v-else>
+      <div class="price-info price-info--android">
+        <span class="price price--android-primary">{{ androidPricePrimary }}</span>
+        <div v-if="androidAnnualLine" class="price-detail">
+          <span class="price price--android-secondary">{{ androidAnnualLine }}</span>
+        </div>
+      </div>
+    </template>
     <div class="cta-container">
       <CcButton
         variant="monetization"
@@ -56,22 +69,34 @@
         :label="currentState.cta"
       />
     </div>
+    <template v-if="platform === 'android'">
+      <p v-if="androidDisclaimer" class="android-disclaimer">{{ androidDisclaimer }}</p>
+    </template>
   </footer>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
-import { getTranslations, parseLangParam, parseEligibleParam, type LangCode } from './translations'
+import {
+  getTranslations,
+  parseLangParam,
+  parseEligibleParam,
+  parsePlatformParam,
+  type LangCode,
+  type PlatformParam,
+} from './translations'
 
 const params = new URLSearchParams(window.location.search)
 const lang = ref<LangCode>(parseLangParam(params.get('lang')))
 const isTrialEligible = ref(parseEligibleParam(params.get('eligible')))
+const platform = ref<PlatformParam>(parsePlatformParam(params.get('platform')))
 
 window.addEventListener('popstate', () => {
   const p = new URLSearchParams(window.location.search)
   lang.value = parseLangParam(p.get('lang'))
   isTrialEligible.value = parseEligibleParam(p.get('eligible'))
+  platform.value = parsePlatformParam(p.get('platform'))
 })
 
 const t = computed(() => getTranslations(lang.value))
@@ -134,6 +159,34 @@ const billingText = computed(() => {
   return t.value.billedAnnually(`$${yearly.annualTotal.toFixed(2)}`)
 })
 
+const androidPricePrimary = computed(() => {
+  const rate = selectedPlanPricing.value?.monthlyRate
+  if (rate == null) return ''
+  return t.value.androidPerMonthDisplay(`$${rate.toFixed(2)}`)
+})
+
+const androidAnnualLine = computed(() => {
+  if (billingPeriod.value !== 'yearly') return null
+  const plan = pricing.plans[selectedTier.value]
+  const yearly = plan.yearly
+  if (!yearly) return null
+  return t.value.androidAnnualSummary(`$${yearly.annualTotal.toFixed(2)}`)
+})
+
+const androidDisclaimer = computed(() => {
+  if (billingPeriod.value === 'yearly') {
+    const plan = pricing.plans[selectedTier.value]
+    const yearly = plan.yearly
+    if (!yearly) return null
+    const annualStr = `$${yearly.annualTotal.toFixed(2)}`
+    const equivMo = `$${(yearly.annualTotal / 12).toFixed(2)}/mo`
+    return t.value.androidGooglePlayDisclaimerYearly(annualStr, equivMo)
+  }
+  const rate = selectedPlanPricing.value?.monthlyRate
+  if (rate == null) return null
+  return t.value.androidGooglePlayDisclaimerMonthly(`$${rate.toFixed(2)}`)
+})
+
 const periodLabels = computed(() => [t.value.yearly, t.value.monthly])
 
 const plans = computed(() => [
@@ -173,6 +226,10 @@ const plans = computed(() => [
   position: relative;
   overflow-x: hidden;
   padding-bottom: 146px;
+}
+
+.paywall--android {
+  padding-bottom: 240px;
 }
 
 /* Header */
@@ -342,5 +399,34 @@ const plans = computed(() => [
 
 .cta-container .cc-button-component {
   max-width: 500px;
+}
+
+.price-info--android {
+  gap: var(--space-4);
+}
+
+.price--android-primary {
+  color: var(--color-blue-100);
+}
+
+.price--android-secondary {
+  color: var(--color-text-boldest);
+  max-width: 286px;
+}
+
+.android-disclaimer {
+  font-family: 'Inter', var(--font-family-system);
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 13px;
+  text-align: center;
+  color: var(--color-transparent-white-50);
+  max-width: 500px;
+  padding: 0 var(--space-12);
+  margin: 0;
+}
+
+.paywall-footer--android .cta-container {
+  padding-bottom: var(--space-8);
 }
 </style>
