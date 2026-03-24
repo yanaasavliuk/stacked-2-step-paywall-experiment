@@ -423,6 +423,7 @@ const plans = computed(() => [
   color: var(--color-transparent-white-50);
   max-width: 500px;
   padding: 0 var(--space-12);
+  padding-top: var(--space-4);
   margin: 0;
 }
 
