@@ -1,5 +1,14 @@
 <template>
   <div class="paywall" :class="{ 'paywall--android': platform === 'android' }">
+      <!-- Nav bar back button -->
+      <nav class="paywall-nav">
+        <CcIconButton
+          :icon="{ name: 'arrow-line-left', variant: 'glyph' }"
+          variant="ghost"
+          size="medium"
+        />
+      </nav>
+
       <!-- Header -->
       <header class="paywall-header">
         <h1 class="paywall-title">
@@ -77,7 +86,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
+import { CcButton, CcIcon, CcIconButton, CcSegmentedControl } from '@chesscom/design-system'
 import {
   getTranslations,
   parseLangParam,
@@ -90,12 +99,14 @@ import {
 const params = new URLSearchParams(window.location.search)
 const lang = ref<LangCode>(parseLangParam(params.get('lang')))
 const isTrialEligible = ref(parseEligibleParam(params.get('eligible')))
+const variant = ref<'a' | 'b'>(params.get('variant') === 'b' ? 'b' : 'a')
 const platform = ref<PlatformParam>(parsePlatformParam(params.get('platform')))
 
 window.addEventListener('popstate', () => {
   const p = new URLSearchParams(window.location.search)
   lang.value = parseLangParam(p.get('lang'))
   isTrialEligible.value = parseEligibleParam(p.get('eligible'))
+  variant.value = p.get('variant') === 'b' ? 'b' : 'a'
   platform.value = parsePlatformParam(p.get('platform'))
 })
 
@@ -194,14 +205,18 @@ const plans = computed(() => [
     key: 'diamond' as PlanKey,
     name: t.value.tiers.diamond,
     icon: 'commerce-diamond',
-    description: t.value.planDescriptions.diamond,
+    description: variant.value === 'b'
+      ? t.value.planDescriptionsVariantB.diamond
+      : t.value.planDescriptions.diamond,
     mostPopular: true,
   },
   {
     key: 'platinum' as PlanKey,
     name: t.value.tiers.platinum,
     icon: 'commerce-platinum',
-    description: t.value.planDescriptions.platinum,
+    description: variant.value === 'b'
+      ? t.value.planDescriptionsVariantB.platinum
+      : t.value.planDescriptions.platinum,
     mostPopular: false,
   },
   {
@@ -232,13 +247,21 @@ const plans = computed(() => [
   padding-bottom: 240px;
 }
 
+/* Nav bar */
+.paywall-nav {
+  position: absolute;
+  top: 54px;
+  left: var(--space-4);
+  z-index: 5;
+}
+
 /* Header */
 .paywall-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-24);
-  padding: 87px var(--space-12) var(--space-12);
+  padding: 94px var(--space-12) var(--space-12);
   width: 100%;
   background: var(--color-gray-900) url('../assets/background-decoration-new.svg') center bottom / auto no-repeat;
   position: relative;

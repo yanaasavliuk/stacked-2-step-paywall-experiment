@@ -58,13 +58,19 @@
     <Transition name="panel">
       <div v-if="panelOpen" class="control-panel">
         <div class="control-section control-section--row">
-          <div class="control-label">Image</div>
-          <CcSwitch v-model="showImage" />
-        </div>
-
-        <div class="control-section control-section--row">
           <div class="control-label">Trial Eligible</div>
           <CcSwitch v-model="trialEligible" />
+        </div>
+
+        <div class="control-section">
+          <div class="control-label">VARIANT</div>
+          <CcSegmentedControl
+            :labels="['A', 'B']"
+            :selected="selectedVariant === 'a' ? 0 : 1"
+            size="small"
+            fullWidth
+            @segment-clicked="selectedVariant = $event === 0 ? 'a' : 'b'"
+          />
         </div>
 
         <div class="control-section">
@@ -130,11 +136,11 @@ const devices: DeviceSpec[] = [
   { id: 'tablet-lg', label: 'Tablet Large', w: 1024, h: 1366 },
 ]
 
-const showImage = ref(true)
 const selectedDevice = ref('phone-md')
 const selectedOrientation = ref<'portrait' | 'landscape'>('portrait')
 const panelOpen = ref(true)
 const trialEligible = ref(true)
+const selectedVariant = ref<'a' | 'b'>('a')
 const selectedPlatform = ref<PlatformParam>('ios')
 const selectedLang = ref<LangCode>('en')
 
@@ -178,8 +184,8 @@ const iframeSrc = computed(() => {
   const params = new URLSearchParams({
     eligible: String(trialEligible.value),
     lang: selectedLang.value,
-    image: String(showImage.value),
     platform: selectedPlatform.value,
+    variant: selectedVariant.value,
   })
   return `/a?${params}`
 })
