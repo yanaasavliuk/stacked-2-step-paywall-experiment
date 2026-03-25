@@ -1,7 +1,16 @@
 <template>
   <div class="paywall" :class="{ 'paywall--android': platform === 'android' }">
+      <!-- Nav bar back button -->
+      <nav class="paywall-nav">
+        <CcIconButton
+          :icon="{ name: 'arrow-line-left', variant: 'glyph' }"
+          variant="ghost"
+          size="medium"
+        />
+      </nav>
+
       <!-- Header -->
-      <header class="paywall-header">
+      <header class="paywall-header" :class="{ 'paywall-header--no-image': !showImage }">
         <h1 class="paywall-title">
           {{ currentState.headline }}
         </h1>
@@ -12,28 +21,66 @@
           @segment-clicked="selectedPeriod = $event"
         />
         <img
+          v-if="showImage"
           src="../assets/hero-image-new.svg"
           class="hero-image"
           alt="Chess piece illustration"
         />
       </header>
 
-      <!-- Plan Buttons -->
+      <!-- Feature Comparison Grid -->
       <section class="paywall-body">
-        <div class="plan-list">
-          <div
-            v-for="plan in plans"
-            :key="plan.key"
-            class="plan-button"
-            :class="{ 'plan-button--selected': selectedTier === plan.key }"
-            @click="selectedTier = plan.key"
-          >
-            <CcIcon :name="plan.icon" variant="color" :size="40" />
-            <div class="plan-info">
-              <span class="plan-name">{{ plan.name }}</span>
-              <span class="plan-description">{{ plan.description }}</span>
+        <div class="feature-grid">
+          <!-- Features Column -->
+          <div class="grid-col grid-col--features">
+            <div class="grid-header grid-header--features">
+              <div class="unlimited-badge">
+                <span class="unlimited-text">{{ t.unlimited }}</span>
+              </div>
             </div>
-            <span v-if="plan.mostPopular" class="most-popular-chip">{{ t.mostPopular }}</span>
+            <div
+              v-for="feature in features"
+              :key="feature"
+              class="grid-cell grid-cell--feature"
+            >
+              <span class="feature-name">{{ feature }}</span>
+            </div>
+            <div class="grid-spacer" />
+          </div>
+
+          <!-- Tier Columns -->
+          <div
+            v-for="tier in tiers"
+            :key="tier.name"
+            class="grid-col"
+            :class="{ 'grid-col--highlighted': selectedTier === tier.key }"
+            @click="selectedTier = tier.key"
+          >
+            <div class="grid-header grid-header--tier">
+              <CcIcon :name="tier.icon" variant="color" :size="24" />
+              <span class="tier-name">{{ tier.name }}</span>
+            </div>
+            <div
+              v-for="(has, idx) in tier.features"
+              :key="idx"
+              class="grid-cell grid-cell--indicator"
+            >
+              <template v-if="has && tier.key === 'diamond'">
+                <svg class="blue-check" width="16" height="16" viewBox="29 8 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="37" cy="16.53" r="7.47" fill="#0B548C"/>
+                  <circle cx="37" cy="16" r="7.47" fill="#009FD9"/>
+                  <path opacity="0.2" d="M33.557 22.627C34.587 23.163 35.758 23.466 37 23.466C41.124 23.466 44.467 20.124 44.467 16C44.467 14.879 44.22 13.816 43.777 12.862C42.234 17.602 38.393 21.293 33.557 22.627Z" fill="#4DC3EA"/>
+                  <path d="M41.361 14.673L35.99 20.044C35.644 20.39 35.388 20.376 35.042 20.044L32.624 17.612C32.089 17.076 32.089 16.854 32.624 16.318L32.672 16.27C33.207 15.735 33.43 15.735 33.966 16.27L35.53 17.835L40.02 13.331C40.555 12.796 40.778 12.796 41.314 13.331L41.361 13.379C41.897 13.914 41.897 14.137 41.361 14.673Z" fill="white"/>
+                </svg>
+              </template>
+              <template v-else-if="has">
+                <CcIcon name="mark-check" :size="16" class="check-icon" />
+              </template>
+              <template v-else>
+                <CcIcon name="mark-minus" :size="16" class="minus-icon" />
+              </template>
+            </div>
+            <div class="grid-spacer" />
           </div>
         </div>
       </section>
@@ -77,7 +124,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
+import { CcButton, CcIcon, CcIconButton, CcSegmentedControl } from '@chesscom/design-system'
 import {
   getTranslations,
   parseLangParam,
@@ -90,12 +137,14 @@ import {
 const params = new URLSearchParams(window.location.search)
 const lang = ref<LangCode>(parseLangParam(params.get('lang')))
 const isTrialEligible = ref(parseEligibleParam(params.get('eligible')))
+const showImage = ref(params.get('image') !== 'false')
 const platform = ref<PlatformParam>(parsePlatformParam(params.get('platform')))
 
 window.addEventListener('popstate', () => {
   const p = new URLSearchParams(window.location.search)
   lang.value = parseLangParam(p.get('lang'))
   isTrialEligible.value = parseEligibleParam(p.get('eligible'))
+  showImage.value = p.get('image') !== 'false'
   platform.value = parsePlatformParam(p.get('platform'))
 })
 
@@ -189,27 +238,36 @@ const androidDisclaimer = computed(() => {
 
 const periodLabels = computed(() => [t.value.yearly, t.value.monthly])
 
-const plans = computed(() => [
+const features = computed(() => [
+  t.value.features.puzzles,
+  t.value.features.lessons,
+  t.value.features.bots,
+  t.value.features.playCoach,
+  t.value.features.noAds,
+  t.value.features.gameReview,
+  t.value.features.moveExplanations,
+  t.value.features.insights,
+  t.value.features.coursesPerks,
+])
+
+const tiers = computed(() => [
   {
-    key: 'diamond' as PlanKey,
-    name: t.value.tiers.diamond,
-    icon: 'commerce-diamond',
-    description: t.value.planDescriptions.diamond,
-    mostPopular: true,
+    key: 'gold' as PlanKey,
+    name: t.value.tiers.gold,
+    icon: 'commerce-gold',
+    features: [true, true, true, true, true, false, false, false, false],
   },
   {
     key: 'platinum' as PlanKey,
     name: t.value.tiers.platinum,
     icon: 'commerce-platinum',
-    description: t.value.planDescriptions.platinum,
-    mostPopular: false,
+    features: [true, true, true, true, true, true, false, false, false],
   },
   {
-    key: 'gold' as PlanKey,
-    name: t.value.tiers.gold,
-    icon: 'commerce-gold',
-    description: t.value.planDescriptions.gold,
-    mostPopular: false,
+    key: 'diamond' as PlanKey,
+    name: t.value.tiers.diamond,
+    icon: 'commerce-diamond',
+    features: [true, true, true, true, true, true, true, true, true],
   },
 ])
 </script>
@@ -232,17 +290,29 @@ const plans = computed(() => [
   padding-bottom: 240px;
 }
 
+/* Nav bar */
+.paywall-nav {
+  position: absolute;
+  top: 54px;
+  left: var(--space-4);
+  z-index: 5;
+}
+
 /* Header */
 .paywall-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-24);
-  padding: 87px var(--space-12) var(--space-12);
+  padding: 94px var(--space-12) var(--space-12);
   width: 100%;
   background: var(--color-gray-900) url('../assets/background-decoration-new.svg') center bottom / auto no-repeat;
   position: relative;
   overflow: hidden;
+}
+
+.paywall-header--no-image {
+  background: var(--color-gray-800);
 }
 
 .paywall-title {
@@ -261,84 +331,162 @@ const plans = computed(() => [
   object-fit: contain;
 }
 
-/* Body - Plan List */
+/* Body - Feature Grid */
 .paywall-body {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
-  padding: var(--space-24) var(--space-12) var(--space-12);
+  padding: var(--space-12) var(--space-12) var(--space-8);
 }
 
-.plan-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  width: 100%;
-  max-width: 366px;
-}
-
-.plan-button {
-  position: relative;
+.feature-grid {
   display: flex;
   flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 500px;
+  height: fit-content;
+}
+
+.grid-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-16);
-  padding: var(--space-16) var(--space-12) var(--space-16) var(--space-24);
   border-radius: 10px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  box-shadow:
-    0px 2px 4px 0px rgba(0, 0, 0, 0.1),
-    0px 1px 2px 0px rgba(0, 0, 0, 0.14),
-    inset 0px 1px 0px 0px rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(50px);
+  max-width: 80px;
+  padding-bottom: var(--space-12);
   cursor: pointer;
 }
 
-.plan-button--selected {
-  outline: var(--border-3) solid var(--color-border-selected);
-  outline-offset: var(--space-2);
+.grid-col--features {
+  flex: 1;
+  width: 100%;
+  min-width: 144px;
+  max-width: none;
+  cursor: default;
 }
 
-.plan-info {
+.grid-col--highlighted {
+  box-shadow: inset 0 0 0 2px var(--color-border-selected);
+  background-color: rgba(0, 0, 0, 0.16);
+}
+
+/* Grid Headers */
+.grid-header {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: 0;
+  align-items: center;
+  width: 100%;
 }
 
-.plan-name {
-  font-family: var(--font-family-heading, 'Chess Sans', sans-serif);
-  font-size: 17px;
-  font-weight: 600;
-  line-height: 1.18;
-  color: var(--color-text-boldest);
+.grid-header--features {
+  height: 66px;
+  justify-content: flex-end;
+  border-radius: 10px 10px 0 0;
 }
 
-.plan-description {
+.grid-header--tier {
+  gap: var(--space-8);
+  padding: var(--space-12) var(--space-4);
+  justify-content: center;
+  border-radius: 10px 10px 0 0;
+}
+
+.unlimited-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-12) 0;
+  background: var(--color-transparent-white-5);
+  border-radius: 5px 5px 0 0;
+}
+
+.unlimited-text {
   font-family: 'Inter', var(--font-family-system);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.33;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
   color: var(--color-transparent-white-72);
 }
 
-.most-popular-chip {
-  position: absolute;
-  top: -13px;
-  left: var(--space-24);
-  padding: 2px 4px;
-  background: var(--color-border-selected);
-  border-radius: 3px;
+.tier-name {
   font-family: 'Inter', var(--font-family-system);
-  font-size: 11.25px;
+  font-size: 10px;
   font-weight: 600;
-  line-height: 1.33;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  line-height: 1;
+  text-align: center;
   color: var(--color-text-boldest);
-  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
-  white-space: nowrap;
+}
+
+/* Grid Cells */
+.grid-cell {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-right: 1px solid var(--color-transparent-white-5);
+  border-image: none;
+}
+
+.grid-col:last-child .grid-cell {
+  border-right: none;
+}
+
+.grid-cell:nth-child(even) {
+  background: var(--color-transparent-black-14);
+}
+
+
+.grid-cell--feature {
+  padding: var(--space-8) var(--space-12);
+  gap: var(--space-8);
+  min-height: var(--space-32);
+  border-top-left-radius: var(--radius-sm, 4px);
+  border-bottom-left-radius: var(--radius-sm, 4px);
+}
+
+.grid-header--features + .grid-cell--feature {
+  border-top-left-radius: 0;
+}
+
+.grid-cell--indicator {
+  padding: var(--space-8);
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: var(--space-32);
+}
+
+.feature-name {
+  font-family: 'Inter', var(--font-family-system);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--color-text-boldest);
+}
+
+.grid-spacer {
+  flex: 0;
+  width: 100%;
+  height: var(--space-4);
+}
+
+.check-icon {
+  color: var(--color-transparent-white-85);
+}
+
+.minus-icon {
+  color: var(--color-transparent-white-40);
+}
+
+.blue-check {
+  width: 16px;
+  height: 16px;
 }
 
 /* Footer */

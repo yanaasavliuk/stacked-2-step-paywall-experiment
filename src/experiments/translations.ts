@@ -36,10 +36,6 @@ export interface TranslationStrings {
     platinum: string
     gold: string
   }
-  planDescriptionsVariantB: {
-    diamond: string
-    platinum: string
-  }
   androidPerMonthDisplay: (rate: string) => string
   androidAnnualSummary: (total: string) => string
   androidGooglePlayDisclaimerYearly: (annualTotal: string, monthlyEquivPerMo: string) => string
@@ -80,13 +76,9 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Friends & Family',
     },
     planDescriptions: {
-      diamond: 'Puzzles, Lessons, Bots, Play Coach, No Ads, Game Review, Move Explanations, Insights, Courses Perks',
-      platinum: 'Puzzles, Lessons, Bots, Play Coach, No Ads, Game Review',
-      gold: 'Puzzles, Lessons, Bots, Play Coach, No Ads',
-    },
-    planDescriptionsVariantB: {
-      diamond: 'All features in Platinum + Move Explanations, Insights, and Courses Perks',
-      platinum: 'All features in Gold + Game Review',
+      diamond: 'Everything in Platinum + Move Explanations, Insights, Courses Perks',
+      platinum: 'Everything in Gold + Game Review',
+      gold: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads',
     },
     androidPerMonthDisplay: (rate) => `${rate} / month`,
     androidAnnualSummary: (total) => `12 months • ${total}`,
@@ -129,13 +121,9 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Freunde & Familie',
     },
     planDescriptions: {
-      diamond: 'Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung, Partieanalyse, Zugerklärungen, Erkenntnisse, Kursvorteile',
-      platinum: 'Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung, Partieanalyse',
-      gold: 'Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung',
-    },
-    planDescriptionsVariantB: {
-      diamond: 'Alle Funktionen von Platin + Zugerklärungen, Erkenntnisse und Kursvorteile',
-      platinum: 'Alle Funktionen von Gold + Partieanalyse',
+      diamond: 'Alles in Platin + Zugerklärungen, Erkenntnisse, Kursvorteile',
+      platinum: 'Alles in Gold + Partieanalyse',
+      gold: 'Unbegrenzt: Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung',
     },
     androidPerMonthDisplay: (rate) => `${rate} / Monat`,
     androidAnnualSummary: (total) => `12 Monate • ${total}`,
@@ -178,13 +166,9 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Друзі та родина',
     },
     planDescriptions: {
-      diamond: "Задачі, Уроки, Боти, Тренер гри, Без реклами, Огляд партій, Пояснення ходів, Аналітика, Переваги курсів",
-      platinum: 'Задачі, Уроки, Боти, Тренер гри, Без реклами, Огляд партій',
-      gold: 'Задачі, Уроки, Боти, Тренер гри, Без реклами',
-    },
-    planDescriptionsVariantB: {
-      diamond: 'Усі функції Платини + Пояснення ходів, Аналітика та Переваги курсів',
-      platinum: 'Усі функції Золота + Огляд партій',
+      diamond: 'Все з Платина + Пояснення ходів, Аналітика, Переваги курсів',
+      platinum: 'Все з Золота + Огляд партій',
+      gold: 'Необмежено: Задачі, Уроки, Боти, Тренер гри, Без реклами',
     },
     androidPerMonthDisplay: (rate) => `${rate} / місяць`,
     androidAnnualSummary: (total) => `12 місяців • ${total}`,

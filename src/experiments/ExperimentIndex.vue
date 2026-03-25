@@ -5,7 +5,12 @@
       <router-link to="/a" class="experiment-card">
         <span class="experiment-label">A</span>
         <span class="experiment-name">Experiment A</span>
-        <span class="experiment-desc">Visual variant</span>
+        <span class="experiment-desc">Feature comparison grid</span>
+      </router-link>
+      <router-link to="/b" class="experiment-card">
+        <span class="experiment-label">B</span>
+        <span class="experiment-name">Experiment B</span>
+        <span class="experiment-desc">Visual variant (in progress)</span>
       </router-link>
     </nav>
   </div>
