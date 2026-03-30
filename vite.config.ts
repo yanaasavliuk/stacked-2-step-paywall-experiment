@@ -5,4 +5,11 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   base: '/',
   plugins: [vue()],
+  cacheDir: '/tmp/vite-cache',
+  server: {
+    watch: {
+      usePolling: true,
+      interval: 500,
+    },
+  },
 })

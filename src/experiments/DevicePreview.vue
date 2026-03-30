@@ -5,40 +5,15 @@
       :style="deviceShellStyle"
     >
       <div class="device-screen">
-        <!-- Status bar -->
-        <div class="status-bar" :class="{ 'status-bar--tablet': isTablet }">
-          <span class="status-time">9:41</span>
-          <div v-if="!isTablet" class="dynamic-island" />
-          <div class="status-icons">
-            <svg class="status-icon" width="17" height="12" viewBox="0 0 17 12" fill="currentColor">
-              <rect x="0" y="7" width="3" height="5" rx="0.5" opacity="0.4" />
-              <rect x="4.5" y="4.5" width="3" height="7.5" rx="0.5" opacity="0.6" />
-              <rect x="9" y="2" width="3" height="10" rx="0.5" opacity="0.8" />
-              <rect x="13.5" y="0" width="3" height="12" rx="0.5" />
-            </svg>
-            <svg class="status-icon" width="16" height="12" viewBox="0 0 16 12" fill="currentColor">
-              <path d="M8 3.2C10 3.2 11.8 4 13.1 5.3L14.2 4.2C12.5 2.5 10.4 1.5 8 1.5S3.5 2.5 1.8 4.2L2.9 5.3C4.2 4 6 3.2 8 3.2Z" opacity="0.5" />
-              <path d="M8 6.4C9.2 6.4 10.3 6.9 11.1 7.6L12.2 6.5C11 5.5 9.6 4.9 8 4.9S5 5.5 3.8 6.5L4.9 7.6C5.7 6.9 6.8 6.4 8 6.4Z" opacity="0.7" />
-              <path d="M8 9.5C8.7 9.5 9.3 9.8 9.8 10.2L8 12L6.2 10.2C6.7 9.8 7.3 9.5 8 9.5Z" />
-            </svg>
-            <svg class="status-icon" width="25" height="12" viewBox="0 0 25 12" fill="currentColor">
-              <rect x="0" y="1" width="21" height="10" rx="2" stroke="currentColor" stroke-width="1" fill="none" opacity="0.4" />
-              <rect x="1.5" y="2.5" width="17" height="7" rx="1" />
-              <path d="M23 4.5V7.5C23.8 7.1 23.8 4.9 23 4.5Z" opacity="0.4" />
-            </svg>
-          </div>
-        </div>
-
-        <iframe
-          :src="iframeSrc"
-          class="device-iframe"
-          frameborder="0"
-          @load="hideIframeScrollbar"
-        />
-
-        <!-- Home indicator -->
-        <div class="home-indicator-area">
-          <div class="home-indicator-pill" />
+        <div class="device-content">
+          <StackedTwoStepPaywall
+            :lang="selectedLang"
+            :platform="selectedPlatform"
+            :show-image="showImage"
+            :device-id="selectedDevice"
+            :orientation="selectedOrientation"
+            :trial-eligible="trialEligible"
+          />
         </div>
       </div>
     </div>
@@ -113,6 +88,7 @@
 import { ref, computed } from 'vue'
 import { CcIcon, CcSegmentedControl, CcSelect, CcSwitch } from '@chesscom/design-system'
 import type { LangCode, PlatformParam } from './translations'
+import StackedTwoStepPaywall from './StackedTwoStepPaywall.vue'
 
 interface DeviceSpec {
   id: string
@@ -153,10 +129,6 @@ const activeDevice = computed(() =>
   devices.find(d => d.id === selectedDevice.value)!
 )
 
-const isTablet = computed(() =>
-  selectedDevice.value.startsWith('tablet')
-)
-
 const deviceWidth = computed(() =>
   selectedOrientation.value === 'portrait'
     ? activeDevice.value.w
@@ -174,31 +146,6 @@ const deviceShellStyle = computed(() => ({
   height: `${deviceHeight.value}px`,
 }))
 
-const iframeSrc = computed(() => {
-  const params = new URLSearchParams({
-    eligible: String(trialEligible.value),
-    lang: selectedLang.value,
-    image: String(showImage.value),
-    platform: selectedPlatform.value,
-  })
-  return `/a?${params}`
-})
-
-function hideIframeScrollbar(event: Event) {
-  try {
-    const iframe = event.target as HTMLIFrameElement
-    const doc = iframe.contentDocument
-    if (!doc) return
-    const style = doc.createElement('style')
-    style.textContent = `
-      html { scrollbar-width: none !important; }
-      html::-webkit-scrollbar { display: none !important; }
-    `
-    doc.head.appendChild(style)
-  } catch {
-    // cross-origin -- ignore
-  }
-}
 </script>
 
 <style scoped>
@@ -234,88 +181,11 @@ function hideIframeScrollbar(event: Event) {
   overflow: hidden;
 }
 
-/* --- Status bar --- */
-.status-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 24px 0;
-  color: rgba(255, 255, 255, 0.85);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  background: transparent;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.status-bar--tablet {
-  height: 24px;
-  padding: 4px 16px 0;
-  font-size: 12px;
-}
-
-.status-time {
-  min-width: 54px;
-}
-
-.dynamic-island {
-  position: absolute;
-  top: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 126px;
-  height: 37px;
-  background: #000;
-  border-radius: 20px;
-}
-
-.status-icons {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.status-icon {
-  display: block;
-}
-
-.device-iframe {
+.device-content {
   width: 100%;
   height: 100%;
-  border: none;
-  display: block;
-  color-scheme: dark;
-}
-
-/* --- Home indicator --- */
-.home-indicator-area {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 34px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 8px;
-  background: transparent;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.home-indicator-pill {
-  width: 134px;
-  height: 5px;
-  border-radius: 3px;
-  background: rgba(255, 255, 255, 0.3);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* --- Floating toggle button --- */
