@@ -76,8 +76,8 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Friends & Family',
     },
     planDescriptions: {
-      diamond: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads, Game Review, Move Explanations, Insights, Courses Perks',
-      platinum: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads, Game Review',
+      diamond: 'Everything in Platinum + Move Explanations, Insights, Courses Perks',
+      platinum: 'Everything in Gold + Game Review',
       gold: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads',
     },
     androidPerMonthDisplay: (rate) => `${rate} / month`,
@@ -121,8 +121,8 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Freunde & Familie',
     },
     planDescriptions: {
-      diamond: 'Unbegrenzt: Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung, Partieanalyse, Zugerklärungen, Erkenntnisse, Kursvorteile',
-      platinum: 'Unbegrenzt: Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung, Partieanalyse',
+      diamond: 'Alles in Platin + Zugerklärungen, Erkenntnisse, Kursvorteile',
+      platinum: 'Alles in Gold + Partieanalyse',
       gold: 'Unbegrenzt: Aufgaben, Lektionen, Bots, Spielcoach, Keine Werbung',
     },
     androidPerMonthDisplay: (rate) => `${rate} / Monat`,
@@ -166,8 +166,8 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Друзі та родина',
     },
     planDescriptions: {
-      diamond: 'Необмежено: Задачі, Уроки, Боти, Тренер гри, Без реклами, Огляд партій, Пояснення ходів, Аналітика, Переваги курсів',
-      platinum: 'Необмежено: Задачі, Уроки, Боти, Тренер гри, Без реклами, Огляд партій',
+      diamond: 'Все з Платина + Пояснення ходів, Аналітика, Переваги курсів',
+      platinum: 'Все з Золота + Огляд партій',
       gold: 'Необмежено: Задачі, Уроки, Боти, Тренер гри, Без реклами',
     },
     androidPerMonthDisplay: (rate) => `${rate} / місяць`,
