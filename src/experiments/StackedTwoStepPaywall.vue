@@ -311,7 +311,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
     <!-- ════════════════════════════════════════════════ -->
     <!-- STEP 2: Billing + Features (phone & tablet)    -->
     <!-- ════════════════════════════════════════════════ -->
-    <div v-else-if="currentStep === 2" class="step-content step-2">
+    <div v-else-if="currentStep === 2" class="step-content step-2" :class="{ 'step-2--variant-b': variant === 'b' }">
       <!-- Back Button -->
       <nav class="paywall-nav">
         <CcIconButton
@@ -535,6 +535,9 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   line-height: 28px;
   text-align: center;
   margin: 0 0 24px 0;
+  max-width: 270px;
+  margin-left: auto;
+  margin-right: auto;
   color: var(--color-text-boldest, #fff);
 }
 
@@ -999,6 +1002,9 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   padding: 0;
   width: 100%;
   margin-top: 24px;
+}
+.step-2--variant-b .step-2-section {
+  margin-top: 40px;
 }
 
 /* Billing Cards */
