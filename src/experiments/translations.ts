@@ -76,9 +76,9 @@ export const translations: Record<LangCode, TranslationStrings> = {
       friendsAndFamily: 'Friends & Family',
     },
     planDescriptions: {
-      diamond: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads, Game Review, Move Explanations, Insights, Courses Perks',
-      platinum: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads, Game Review',
-      gold: 'Unlimited: Puzzles, Lessons, Bots, Play Coach, No Ads',
+      diamond: 'Unlimited Game Review, Move Explanations, Insights, Puzzles, Lessons, Coach Games, Bots, No Ads',
+      platinum: 'Unlimited Puzzles, Lessons, Coach Games, Bots, Game Review, No Ads',
+      gold: 'Unlimited Puzzles, Lessons, Coach Games, Bots, No Ads',
     },
     androidPerMonthDisplay: (rate) => `${rate} / month`,
     androidAnnualSummary: (total) => `12 months • ${total}`,
