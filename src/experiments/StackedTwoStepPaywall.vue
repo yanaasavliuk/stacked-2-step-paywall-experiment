@@ -329,8 +329,8 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
       <!-- Section: Billing + Benefits -->
       <div class="step-2-section">
-        <!-- Billing Cards -->
-        <div class="billing-cards-container">
+        <!-- Billing Cards — Variant A (compact, side-by-side layout) -->
+        <div v-if="variant === 'a'" class="billing-cards-container">
           <!-- Yearly -->
           <div
             class="billing-card"
@@ -371,6 +371,47 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
                   ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
                 </span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Billing Cards — Variant B (tall, stacked layout) -->
+        <div v-else class="billing-cards-container billing-cards-container--b">
+          <!-- Yearly -->
+          <div
+            class="billing-card billing-card--b-yearly"
+            :class="{ 'billing-card--selected': selectedBilling === 'yearly' }"
+            @click="selectBilling('yearly')"
+            role="button" tabindex="0"
+          >
+            <div class="billing-card-inner billing-card-inner--b">
+              <span class="billing-card-chip-value">Best Value</span>
+              <span class="billing-card-label-b">{{ t.yearly }}</span>
+              <div class="billing-card-pricing-b">
+                <span class="billing-card-price-old">
+                  ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
+                </span>
+                <span class="billing-card-price-b">
+                  ${{ formatPrice(pricing[selectedTier].yearly.annualTotal) }} / year
+                </span>
+                <span class="billing-card-subtext">
+                  billed annually, ${{ formatPrice(pricing[selectedTier].yearly.monthlyRate) }}/month
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- Monthly -->
+          <div
+            class="billing-card billing-card--b-monthly"
+            :class="{ 'billing-card--selected': selectedBilling === 'monthly' }"
+            @click="selectBilling('monthly')"
+            role="button" tabindex="0"
+          >
+            <div class="billing-card-inner billing-card-inner--b">
+              <span class="billing-card-label-b">{{ t.monthly }}</span>
+              <span class="billing-card-price-b">
+                ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
+              </span>
             </div>
           </div>
         </div>
@@ -1060,6 +1101,66 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   line-height: 10px;
   color: rgba(255, 255, 255, 0.5);
   text-decoration: line-through;
+}
+
+/* ─── Variant B billing card overrides ─── */
+.billing-cards-container--b {
+  gap: 16px;
+}
+
+.billing-card--b-yearly {
+  height: 133px;
+}
+
+.billing-card--b-monthly {
+  height: 98px;
+}
+
+.billing-card-inner--b {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 7px;
+  position: relative;
+}
+
+.billing-card-label-b {
+  font-family: var(--font-family-heading, 'Chess Sans', sans-serif);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 28px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.billing-card-pricing-b {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.billing-card-price-b {
+  font-family: var(--font-family-heading, 'Chess Sans', sans-serif);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 20px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.billing-card-chip-value {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 2px 4px;
+  background: rgba(48, 87, 48, 0.3);
+  color: #81b64c;
+  font-family: var(--font-family-body, 'Inter', sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 3px;
+  line-height: 15px;
+  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 }
 
 /* Benefits Card */
