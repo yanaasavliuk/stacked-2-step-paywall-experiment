@@ -1120,8 +1120,16 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 7px;
+  gap: 0;
   position: relative;
+}
+
+.billing-card--b-yearly .billing-card-inner--b {
+  gap: 7px;
+}
+
+.billing-card--b-monthly .billing-card-inner--b {
+  gap: 8px;
 }
 
 .billing-card-label-b {
@@ -1135,7 +1143,15 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 .billing-card-pricing-b {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 0;
+}
+
+.billing-card-pricing-b .billing-card-price-old {
+  margin-bottom: 8px;
+}
+
+.billing-card-pricing-b .billing-card-price-b {
+  margin-bottom: 4px;
 }
 
 .billing-card-price-b {
