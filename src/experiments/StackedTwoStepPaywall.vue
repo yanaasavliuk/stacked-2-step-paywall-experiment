@@ -1109,11 +1109,11 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 }
 
 .billing-card--b-yearly {
-  height: 133px;
+  height: auto;
 }
 
 .billing-card--b-monthly {
-  height: 98px;
+  height: auto;
 }
 
 .billing-card-inner--b {
@@ -1121,6 +1121,8 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   align-items: flex-start;
   justify-content: center;
   gap: 0;
+  height: auto;
+  padding: 16px;
   position: relative;
 }
 
@@ -1130,6 +1132,11 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 .billing-card--b-monthly .billing-card-inner--b {
   gap: 8px;
+}
+
+.billing-card-inner--b .billing-card-left,
+.billing-card-inner--b .billing-card-right {
+  min-height: 0;
 }
 
 .billing-card-label-b {
