@@ -278,6 +278,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
             @keydown.enter="selectTier(plan.id)"
             @keydown.space="selectTier(plan.id)"
           >
+            <span v-if="plan.id === 'diamond'" class="plan-card-chip">Most popular</span>
             <div class="plan-card-icon">
               <CcIcon :name="plan.icon" variant="color" :size="40" />
             </div>
@@ -835,6 +836,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 }
 
 .plan-card {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -853,6 +855,21 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 .plan-card:hover {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.07) 100%);
+}
+
+.plan-card-chip {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  padding: 2px 8px;
+  background: var(--color-border-selected, #81b64c);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 4px;
+  line-height: 16px;
 }
 
 .plan-card--selected {
