@@ -114,7 +114,7 @@ const devices: DeviceSpec[] = [
 ]
 
 const selectedVariant = ref<'a' | 'b'>('a')
-const showImage = computed(() => selectedVariant.value === 'a')
+const showImage = ref(true)
 const selectedDevice = ref('phone-md')
 const selectedOrientation = ref<'portrait' | 'landscape'>('portrait')
 const panelOpen = ref(true)
