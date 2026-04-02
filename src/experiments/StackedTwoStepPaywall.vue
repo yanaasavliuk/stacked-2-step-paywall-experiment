@@ -49,6 +49,7 @@ const props = withDefaults(
     deviceId?: string
     orientation?: 'portrait' | 'landscape'
     trialEligible?: boolean
+    variant?: 'a' | 'b'
   }>(),
   {
     lang: 'en',
@@ -57,6 +58,7 @@ const props = withDefaults(
     deviceId: 'iphone-15-pro',
     orientation: 'portrait',
     trialEligible: false,
+    variant: 'a',
   }
 )
 
@@ -163,7 +165,7 @@ const currentHeadline = computed(() => {
 })
 
 const currentCtaText = computed(() => {
-  if (currentStep.value === 2) return 'Start my free week'
+  if (currentStep.value === 2) return props.trialEligible ? 'Start my free week' : 'Go Premium'
   const strings = props.trialEligible ? t.value.trialEligible : t.value.notTrialEligible
   return strings.cta
 })
@@ -373,8 +375,8 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
           </div>
         </div>
 
-        <!-- Benefits Card -->
-        <div class="benefits-card-wrapper">
+        <!-- Benefits Card (Variant A only) -->
+        <div v-if="variant === 'a'" class="benefits-card-wrapper">
           <!-- Pill Header -->
           <div class="benefits-pill">
             <CcIcon :name="`commerce-${selectedTier}`" variant="color" :size="12" />

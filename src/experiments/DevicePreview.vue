@@ -13,6 +13,7 @@
             :device-id="selectedDevice"
             :orientation="selectedOrientation"
             :trial-eligible="trialEligible"
+            :variant="selectedVariant"
           />
         </div>
       </div>
