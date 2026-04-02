@@ -502,6 +502,9 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   justify-content: center;
   align-items: center;
   width: 100%;
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: -16px;
   overflow: visible;
 }
