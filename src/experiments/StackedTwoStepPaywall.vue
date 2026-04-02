@@ -1002,9 +1002,9 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 .billing-card--selected::after {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: -4px;
   border: 2px solid var(--color-border-selected, #81b64c);
-  border-radius: 12px;
+  border-radius: 14px;
   pointer-events: none;
 }
 
