@@ -980,7 +980,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 .billing-card-inner {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   width: 100%;
   height: 100%;
@@ -991,7 +991,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
     0px 2px 4px 0px rgba(0, 0, 0, 0.1),
     0px 1px 2px 0px rgba(0, 0, 0, 0.14),
     inset 0px 1px 0px 0px rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(25px);
+  backdrop-filter: blur(50px);
   transition: background 0.15s ease;
 }
 
@@ -1013,6 +1013,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   flex-direction: column;
   gap: 10px;
   justify-content: center;
+  min-height: 48px;
 }
 
 .billing-card-right {
@@ -1021,6 +1022,9 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   align-items: flex-end;
   gap: 12px;
   justify-content: center;
+  min-height: 48px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .billing-card-label {
