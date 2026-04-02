@@ -999,10 +999,13 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.07) 100%);
 }
 
-.billing-card--selected {
+.billing-card--selected::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid var(--color-border-selected, #81b64c);
   border-radius: 12px;
-  outline: 2px solid var(--color-border-selected, #81b64c);
-  outline-offset: 0px;
+  pointer-events: none;
 }
 
 .billing-card-left {
