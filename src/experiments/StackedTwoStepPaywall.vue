@@ -519,7 +519,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   max-width: 280px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: -16px;
+  margin-bottom: 16px;
   overflow: visible;
 }
 
@@ -625,10 +625,10 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 /* Icon positions + fly-from-diamond offsets — matched to Figma (291×202 frame) */
 /* Each icon starts hidden behind the gem center (~50%, ~38%) and flies outward */
-.hero-icon--1 { left: 2%;  top: 12%;  width: 14%; height: auto; --dx: 180%; --dy: 130%; }
-.hero-icon--2 { left: -2%; top: 48%;  width: 22%; height: auto; --dx: 150%; --dy: -30%; }
-.hero-icon--3 { left: 84%; top: 12%;  width: 14%; height: auto; --dx: -140%; --dy: 140%; }
-.hero-icon--4 { left: 78%; top: 48%;  width: 22%; height: auto; --dx: -120%; --dy: -30%; }
+.hero-icon--1 { left: 6%;  top: 12%;  width: 14%; height: auto; --dx: 180%; --dy: 130%; }
+.hero-icon--2 { left: 2%;  top: 48%;  width: 22%; height: auto; --dx: 150%; --dy: -30%; }
+.hero-icon--3 { left: 80%; top: 12%;  width: 14%; height: auto; --dx: -140%; --dy: 140%; }
+.hero-icon--4 { left: 74%; top: 48%;  width: 22%; height: auto; --dx: -120%; --dy: -30%; }
 
 /* Sparkle container */
 .hero-sparkles {
