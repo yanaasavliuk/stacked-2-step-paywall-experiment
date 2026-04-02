@@ -150,7 +150,6 @@ const currentHeadline = computed(() => {
 })
 
 const currentCtaText = computed(() => {
-  if (currentStep.value === 2) return 'Start my free week'
   const strings = props.trialEligible ? t.value.trialEligible : t.value.notTrialEligible
   return strings.cta
 })
@@ -316,6 +315,24 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
       <div class="step-2-section">
         <!-- Billing Cards -->
         <div class="billing-cards-container">
+          <!-- Monthly -->
+          <div
+            class="billing-card"
+            :class="{ 'billing-card--selected': selectedBilling === 'monthly' }"
+            @click="selectBilling('monthly')"
+            role="button" tabindex="0"
+          >
+            <div class="billing-card-inner">
+              <div class="billing-card-left">
+                <span class="billing-card-label">{{ t.monthly }}</span>
+              </div>
+              <div class="billing-card-right">
+                <span class="billing-card-price">
+                  ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
+                </span>
+              </div>
+            </div>
+          </div>
           <!-- Yearly -->
           <div
             class="billing-card"
@@ -336,24 +353,6 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
                 </span>
                 <span class="billing-card-price">
                   ${{ formatPrice(pricing[selectedTier].yearly.annualTotal) }} / year
-                </span>
-              </div>
-            </div>
-          </div>
-          <!-- Monthly -->
-          <div
-            class="billing-card"
-            :class="{ 'billing-card--selected': selectedBilling === 'monthly' }"
-            @click="selectBilling('monthly')"
-            role="button" tabindex="0"
-          >
-            <div class="billing-card-inner">
-              <div class="billing-card-left">
-                <span class="billing-card-label">{{ t.monthly }}</span>
-              </div>
-              <div class="billing-card-right">
-                <span class="billing-card-price">
-                  ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
                 </span>
               </div>
             </div>
