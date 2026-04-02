@@ -118,14 +118,14 @@ const plansConfig = computed(() => [
 
 // Features list for phone view
 const allFeatures = [
+  { id: 'moveExplanations', icon: 'move-circle-brilliant', color: '#48B088' },
+  { id: 'gameReview', icon: 'move-circle-best', color: '#81B64C' },
+  { id: 'insights', icon: 'device-bulb-glow', color: '#F5C342' },
   { id: 'puzzles', icon: 'game-type-puzzle', color: '#E8833A' },
   { id: 'lessons', icon: 'game-lesson', color: '#48A8B5' },
   { id: 'bots', icon: 'game-type-computer', color: '#7B9AAE' },
   { id: 'playCoach', icon: 'game-lesson-student', color: '#8BA84B' },
   { id: 'noAds', icon: 'circle-block', color: '#D04040' },
-  { id: 'gameReview', icon: 'move-circle-best', color: '#81B64C' },
-  { id: 'moveExplanations', icon: 'move-circle-brilliant', color: '#48B088' },
-  { id: 'insights', icon: 'device-bulb-glow', color: '#F5C342' },
 ] as const
 
 // Feature inclusion matrix
@@ -309,7 +309,6 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
       <!-- Title Group -->
       <div class="step-2-title-group">
         <h1 class="paywall-title">{{ currentHeadline }}</h1>
-        <p class="step-2-subtitle">Select a Plan</p>
       </div>
 
       <!-- Section: Billing + Benefits -->
