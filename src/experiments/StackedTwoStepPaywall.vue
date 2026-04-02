@@ -493,7 +493,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   display: flex;
   flex-direction: column;
   padding: 24px 12px 0 12px;
-  animation: fadeSlide 0.25s cubic-bezier(0, 0, 0.4, 1);
+  animation: fadeSlide 0.1s cubic-bezier(0, 0, 0.4, 1);
   min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
@@ -747,7 +747,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 }
 
 /* ═══════════════ DIAMOND ═══════════════ */
-/* Chess.com motion curves: ease_out-1 (0,0,0.2,1) for appearing elements */
+/* Chess.com motion tokens: ease-out-gentle (0,0,0.2,1) for scale/move, ease-out-strong (0,0,0.4,1) for fade/opacity */
 .hero-anim--diamond .hero-glow--svg { top: 38%; animation: glow-appear-subtle 0.4s 0.2s cubic-bezier(0, 0, 0.4, 1) both; }
 .hero-anim--diamond .hero-layer--gem { top: 38%; }
 .hero-anim--diamond .hero-shadow--svg {
@@ -755,15 +755,15 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   animation: shadow-svg-reveal 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--diamond .hero-layer--icon {
-  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--diamond .hero-sparkle--1 {
   left: 52%; top: 18%; width: 9%;
-  animation: sparkle-img-pop 0.35s 0.35s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: sparkle-img-pop 0.3s 0.35s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--diamond .hero-sparkle--2 {
   left: 36%; top: 39%; width: 5%;
-  animation: sparkle-img-pop 0.35s 0.55s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: sparkle-img-pop 0.3s 0.55s cubic-bezier(0, 0, 0.4, 1) both;
 }
 
 /* ═══════════════ PLATINUM ═══════════════ */
@@ -785,15 +785,15 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   animation: shadow-svg-reveal 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--platinum .hero-layer--icon {
-  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--platinum .hero-sparkle--1 {
   left: 33%; top: 28%; width: 5%;
-  animation: sparkle-img-pop 0.35s 0.3s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: sparkle-img-pop 0.3s 0.3s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--platinum .hero-sparkle--2 {
   left: 65%; top: 48%; width: 3.5%;
-  animation: sparkle-img-pop 0.35s 0.5s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: sparkle-img-pop 0.3s 0.5s cubic-bezier(0, 0, 0.4, 1) both;
 }
 
 /* ═══════════════ GOLD ═══════════════ */
@@ -815,16 +815,16 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   transform: translate(-50%, -50%);
   opacity: 0;
   clip-path: none;
-  animation: gold-shadow-appear 0.6s 0s cubic-bezier(0, 0, 0.4, 1) both;
+  animation: gold-shadow-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--gold .hero-layer--icon {
-  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.2, 1) both;
+  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 /* Gold 4 sparkles — ON the star surface, matching Figma */
-.hero-anim--gold .hero-sparkle--1 { left: 34%; top: 14%; width: 10%; animation: sparkle-img-pop 0.35s 0.3s cubic-bezier(0, 0, 0.2, 1) both; }
-.hero-anim--gold .hero-sparkle--2 { left: 57%; top: 10%; width: 8%;  animation: sparkle-img-pop 0.35s 0.45s cubic-bezier(0, 0, 0.2, 1) both; }
-.hero-anim--gold .hero-sparkle--3 { left: 35%; top: 40%; width: 9%;  animation: sparkle-img-pop 0.35s 0.6s cubic-bezier(0, 0, 0.2, 1) both; }
-.hero-anim--gold .hero-sparkle--4 { left: 49%; top: 15%; width: 18%; rotate: 90deg; animation: sparkle-img-pop 0.35s 0.75s cubic-bezier(0, 0, 0.2, 1) both; }
+.hero-anim--gold .hero-sparkle--1 { left: 34%; top: 14%; width: 10%; animation: sparkle-img-pop 0.3s 0.3s cubic-bezier(0, 0, 0.4, 1) both; }
+.hero-anim--gold .hero-sparkle--2 { left: 57%; top: 10%; width: 8%;  animation: sparkle-img-pop 0.3s 0.45s cubic-bezier(0, 0, 0.4, 1) both; }
+.hero-anim--gold .hero-sparkle--3 { left: 35%; top: 40%; width: 9%;  animation: sparkle-img-pop 0.3s 0.6s cubic-bezier(0, 0, 0.4, 1) both; }
+.hero-anim--gold .hero-sparkle--4 { left: 49%; top: 15%; width: 18%; rotate: 90deg; animation: sparkle-img-pop 0.3s 0.75s cubic-bezier(0, 0, 0.4, 1) both; }
 
 /* Gold shadow — star silhouette fades in behind gem, no distortion */
 @keyframes gold-shadow-appear {
@@ -902,7 +902,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
     inset 0px 1px 0px 0px rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(50px);
   cursor: pointer;
-  transition: background 0.15s cubic-bezier(0, 0, 0.2, 1);
+  transition: background 0.05s cubic-bezier(0, 0, 0.2, 1);
 }
 
 .plan-card:hover {
@@ -1031,7 +1031,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
     0px 1px 2px 0px rgba(0, 0, 0, 0.14),
     inset 0px 1px 0px 0px rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(50px);
-  transition: background 0.15s cubic-bezier(0, 0, 0.2, 1);
+  transition: background 0.05s cubic-bezier(0, 0, 0.2, 1);
 }
 
 .billing-card:hover .billing-card-inner {
