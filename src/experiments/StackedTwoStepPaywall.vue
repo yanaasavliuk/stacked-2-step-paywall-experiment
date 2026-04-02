@@ -859,17 +859,21 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 .plan-card-chip {
   position: absolute;
-  top: -10px;
-  left: 12px;
-  padding: 2px 8px;
+  top: -13px;
+  left: 24px;
+  padding: 2px 4px;
   background: var(--color-border-selected, #81b64c);
   color: #fff;
   font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-weight: 600;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
-  border-radius: 4px;
-  line-height: 16px;
+  border-radius: 3px;
+  line-height: 15px;
+  min-height: 19px;
+  display: flex;
+  align-items: center;
+  text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.2);
 }
 
 .plan-card--selected {
