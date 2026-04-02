@@ -519,7 +519,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   max-width: 280px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   overflow: visible;
 }
 
@@ -579,7 +579,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 /* Gem — centered, sized to match Figma proportions (140/291 ≈ 48%) */
 .hero-layer--gem {
-  z-index: 1;
+  z-index: 3;
   left: 50%;
   top: 42%;
   width: 48%;
@@ -634,14 +634,14 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 .hero-sparkles {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
 }
 
 /* Sparkle — individual SVGs positioned on gem facets to match Figma */
 .hero-sparkle-img {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   height: auto;
   pointer-events: none;
   opacity: 0;
