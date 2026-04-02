@@ -57,7 +57,7 @@
             @click="selectedTier = tier.key"
           >
             <div class="grid-header grid-header--tier">
-              <CcIcon :name="tier.icon" variant="color" :size="24" />
+              <MembershipIcon :tier="tier.key" :size="24" />
               <span class="tier-name">{{ tier.name }}</span>
             </div>
             <div
@@ -125,6 +125,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CcButton, CcIcon, CcIconButton, CcSegmentedControl } from '@chesscom/design-system'
+import MembershipIcon from './MembershipIcon.vue'
 import {
   getTranslations,
   parseLangParam,

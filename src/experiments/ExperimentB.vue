@@ -28,7 +28,7 @@
             :class="{ 'plan-button--selected': selectedTier === plan.key }"
             @click="selectedTier = plan.key"
           >
-            <CcIcon :name="plan.icon" variant="color" :size="40" />
+            <MembershipIcon :tier="plan.key" :size="40" />
             <div class="plan-info">
               <span class="plan-name">{{ plan.name }}</span>
               <span class="plan-description">{{ plan.description }}</span>
@@ -78,6 +78,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { CcButton, CcIcon, CcSegmentedControl } from '@chesscom/design-system'
+import MembershipIcon from './MembershipIcon.vue'
 import {
   getTranslations,
   parseLangParam,
