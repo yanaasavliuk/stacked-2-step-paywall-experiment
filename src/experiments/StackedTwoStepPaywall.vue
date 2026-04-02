@@ -609,12 +609,12 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   will-change: opacity, transform;
 }
 
-/* Icon positions + fly-from-diamond offsets */
-/* Each icon starts hidden behind the gem center (~50%, ~42%) and flies outward */
-.hero-icon--1 { left: 5%;  top: 10%;  width: 13%; height: auto; --dx: 230%; --dy: 180%; }
-.hero-icon--2 { left: 3%;  top: 44%;  width: 21%; height: auto; --dx: 190%; --dy: -15%; }
-.hero-icon--3 { left: 80%; top: 8%;   width: 13%; height: auto; --dx: -180%; --dy: 190%; }
-.hero-icon--4 { left: 76%; top: 44%;  width: 21%; height: auto; --dx: -150%; --dy: -15%; }
+/* Icon positions + fly-from-diamond offsets — matched to Figma (291×202 frame) */
+/* Each icon starts hidden behind the gem center (~50%, ~38%) and flies outward */
+.hero-icon--1 { left: 10%; top: 14%;  width: 16%; height: auto; --dx: 180%; --dy: 130%; }
+.hero-icon--2 { left: 5%;  top: 48%;  width: 24%; height: auto; --dx: 150%; --dy: -30%; }
+.hero-icon--3 { left: 74%; top: 12%;  width: 16%; height: auto; --dx: -140%; --dy: 140%; }
+.hero-icon--4 { left: 70%; top: 48%;  width: 24%; height: auto; --dx: -120%; --dy: -30%; }
 
 /* Sparkle container */
 .hero-sparkles {
