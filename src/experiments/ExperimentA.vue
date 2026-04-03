@@ -57,7 +57,7 @@
             @click="selectedTier = tier.key"
           >
             <div class="grid-header grid-header--tier">
-              <MembershipIcon :tier="tier.key" :size="24" />
+              <MembershipIcon :tier="tier.key as 'gold' | 'platinum' | 'diamond'" :size="24" />
               <span class="tier-name">{{ tier.name }}</span>
             </div>
             <div

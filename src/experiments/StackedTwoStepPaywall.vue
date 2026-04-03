@@ -426,7 +426,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
         <div v-if="variant === 'a'" class="benefits-card-wrapper">
           <!-- Pill Header -->
           <div class="benefits-pill">
-            <CcIcon :name="plans.find(p => p.id === selectedTier)?.icon || 'commerce-diamond'" variant="color" :size="12" />
+            <CcIcon :name="plansConfig.find((p: { id: string }) => p.id === selectedTier)?.icon || 'commerce-diamond'" variant="color" :size="12" />
             <span class="benefits-pill-text">
               Unlimited with <span class="benefits-pill-tier" :class="`benefits-pill-tier--${selectedTier}`">{{ t.tiers[selectedTier] }} Plan:</span>
             </span>
