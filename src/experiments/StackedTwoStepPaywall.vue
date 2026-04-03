@@ -37,7 +37,7 @@ import GoldIcon2 from '../assets/figma/layers/gold-icon2-svg.svg?url'
 import GoldIcon3 from '../assets/figma/layers/gold-icon3-svg.svg?url'
 import GoldIcon4 from '../assets/figma/layers/gold-icon4-svg.svg?url'
 import { CcButton, CcIcon, CcIconButton } from '@chesscom/design-system'
-import MembershipIcon from './MembershipIcon.vue'
+// import MembershipIcon from './MembershipIcon.vue'
 
 type TierType = 'gold' | 'platinum' | 'diamond'
 type BillingType = 'monthly' | 'yearly'
@@ -296,7 +296,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
           >
             <span v-if="plan.id === 'diamond'" class="plan-card-chip">Most popular</span>
             <div class="plan-card-icon">
-              <MembershipIcon :tier="plan.id" :size="40" />
+              <CcIcon :name="plan.icon" variant="color" :size="40" />
             </div>
             <div class="plan-card-content">
               <span class="plan-card-title">{{ plan.name }}</span>
@@ -421,7 +421,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
         <div v-if="variant === 'a'" class="benefits-card-wrapper">
           <!-- Pill Header -->
           <div class="benefits-pill">
-            <MembershipIcon :tier="selectedTier" :size="12" />
+            <CcIcon :name="plans.find(p => p.id === selectedTier)?.icon || 'commerce-diamond'" variant="color" :size="12" />
             <span class="benefits-pill-text">
               Unlimited with <span class="benefits-pill-tier" :class="`benefits-pill-tier--${selectedTier}`">{{ t.tiers[selectedTier] }} Plan:</span>
             </span>
