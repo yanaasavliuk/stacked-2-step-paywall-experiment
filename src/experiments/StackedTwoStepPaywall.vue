@@ -376,32 +376,8 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
           </div>
         </div>
 
-        <!-- Billing Cards — Variant B (horizontal layout) -->
+        <!-- Billing Cards — Variant B (horizontal layout, matches Figma: Monthly first, Yearly second) -->
         <div v-else class="billing-cards-container billing-cards-container--b">
-          <!-- Yearly -->
-          <div
-            class="billing-card billing-card--b"
-            :class="{ 'billing-card--selected': selectedBilling === 'yearly' }"
-            @click="selectBilling('yearly')"
-            role="button" tabindex="0"
-          >
-            <div class="billing-card-inner">
-              <div class="billing-card-left">
-                <span class="billing-card-label">{{ t.yearly }}</span>
-                <span class="billing-card-subtext">
-                  billed annually, ${{ formatPrice(pricing[selectedTier].yearly.monthlyRate) }}/month
-                </span>
-              </div>
-              <div class="billing-card-right">
-                <span class="billing-card-price-old">
-                  ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
-                </span>
-                <span class="billing-card-price">
-                  ${{ formatPrice(pricing[selectedTier].yearly.annualTotal) }} / year
-                </span>
-              </div>
-            </div>
-          </div>
           <!-- Monthly -->
           <div
             class="billing-card billing-card--b"
@@ -416,6 +392,30 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
               <div class="billing-card-right">
                 <span class="billing-card-price">
                   ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- Yearly -->
+          <div
+            class="billing-card billing-card--b"
+            :class="{ 'billing-card--selected': selectedBilling === 'yearly' }"
+            @click="selectBilling('yearly')"
+            role="button" tabindex="0"
+          >
+            <div class="billing-card-inner">
+              <div class="billing-card-left billing-card-left--yearly-b">
+                <span class="billing-card-label">{{ t.yearly }}</span>
+                <span class="billing-card-subtext">
+                  billed annually, ${{ formatPrice(pricing[selectedTier].yearly.monthlyRate) }}/month
+                </span>
+              </div>
+              <div class="billing-card-right">
+                <span class="billing-card-price-old">
+                  ${{ formatPrice(pricing[selectedTier].monthly.monthlyRate) }} / month
+                </span>
+                <span class="billing-card-price">
+                  ${{ formatPrice(pricing[selectedTier].yearly.annualTotal) }} / year
                 </span>
               </div>
             </div>
@@ -1113,23 +1113,34 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
 
 /* ─── Variant B billing card overrides ─── */
 .billing-cards-container--b {
-  gap: 8px;
+  gap: 12px;
+  max-width: 366px;
 }
 
 .billing-card--b {
-  height: auto;
+  height: 80px;
 }
 
 .billing-card--b .billing-card-inner {
   padding: 16px;
+  align-items: center;
 }
 
 .billing-card--b .billing-card-left {
-  gap: 6px;
+  width: 194px;
+  min-height: 48px;
+  gap: 0;
+  justify-content: center;
+}
+
+.billing-card-left--yearly-b {
+  gap: 10px !important;
 }
 
 .billing-card--b .billing-card-right {
-  gap: 4px;
+  width: 124px;
+  min-height: auto;
+  gap: 12px;
 }
 
 /* Benefits Card */
