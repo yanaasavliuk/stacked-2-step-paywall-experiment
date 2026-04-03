@@ -759,7 +759,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   animation: shadow-svg-reveal 0.2s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--diamond .hero-layer--icon {
-  animation: icon-appear 0.2s 0s cubic-bezier(0, 0, 0.4, 1) both;
+  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--diamond .hero-sparkle--1 {
   left: 52%; top: 18%; width: 9%;
@@ -789,7 +789,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   animation: shadow-svg-reveal 0.2s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--platinum .hero-layer--icon {
-  animation: icon-appear 0.2s 0s cubic-bezier(0, 0, 0.4, 1) both;
+  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--platinum .hero-sparkle--1 {
   left: 33%; top: 28%; width: 5%;
@@ -822,7 +822,7 @@ const goldSparkles = [GoldSparkle1, GoldSparkle2, GoldSparkle3, GoldSparkle4]
   animation: gold-shadow-appear 0.2s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 .hero-anim--gold .hero-layer--icon {
-  animation: icon-appear 0.2s 0s cubic-bezier(0, 0, 0.4, 1) both;
+  animation: icon-appear 0.5s 0s cubic-bezier(0, 0, 0.4, 1) both;
 }
 /* Gold 4 sparkles — ON the star surface, matching Figma */
 .hero-anim--gold .hero-sparkle--1 { left: 34%; top: 14%; width: 10%; animation: sparkle-img-pop 0.1s 0.25s cubic-bezier(0, 0, 0.4, 1) both; }
